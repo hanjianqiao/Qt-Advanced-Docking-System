@@ -30,6 +30,7 @@
 #include "ElidingLabel.h"
 #include <QMouseEvent>
 
+#define ELIDE_ELLIPSIS  u8"\u2026"
 
 namespace ads
 {
@@ -66,7 +67,7 @@ void ElidingLabelPrivate::elideText(int Width)
 	}
     QFontMetrics fm = _this->fontMetrics();
     QString  str = fm.elidedText(Text, ElideMode, Width - _this->margin() * 2 - _this->indent());
-    if (str == "…")
+    if (str == ELIDE_ELLIPSIS)
     {
     	str = Text.at(0);
     }
@@ -169,9 +170,9 @@ QSize CElidingLabel::minimumSizeHint() const
     }
     const QFontMetrics  &fm = fontMetrics();
     #if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
-        QSize size(fm.horizontalAdvance(d->Text.left(2) + "…"), fm.height());
+        QSize size(fm.horizontalAdvance(d->Text.left(2) + ELIDE_ELLIPSIS), fm.height());
     #else
-        QSize size(fm.width(d->Text.left(2) + "…"), fm.height());
+        QSize size(fm.width(d->Text.left(2) + ELIDE_ELLIPSIS), fm.height());
     #endif
     return size;
 }
